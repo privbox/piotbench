@@ -96,11 +96,13 @@ void *accept_worker(void *opaque, struct thread_info_t *ti) {
 	};
 
 	while (!ctx->stopping && !ret) {
-		if (KERNCALL_COND(ctx->cfg, accept))
+		if (KERNCALL_COND(ctx->cfg, accept)) {
 			ret = kerncall_spawn(
 				(uintptr_t) __accept_worker,
 				(unsigned long) &arg
 			);
+			asm(".align 32");
+		}
 		else
 			ret = __accept_worker(&arg);
 	}

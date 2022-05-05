@@ -66,11 +66,13 @@ void *submitter_worker(void *opaque, struct thread_info_t *ti) {
 	long ret = 0;
 
 	while (!ctx->stopping && !ret) {
-		if (KERNCALL_COND(ctx->cfg, submit))
+		if (KERNCALL_COND(ctx->cfg, submit)) {
 			ret = kerncall_spawn(
 				(uintptr_t) __submitter_worker,
 				(unsigned long) &arg
 			);
+			asm(".align 32");
+		}
 		else
 			ret = __submitter_worker(&arg);
 	}

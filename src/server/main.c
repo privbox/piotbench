@@ -373,6 +373,7 @@ int main(int argc, char **argv) {
 	signal(SIGPIPE, SIG_IGN);
 	
 	kerncall_setup();
+	asm(".align 32");
 
 	if (
 		!kerncall_avail &&
